@@ -36,9 +36,8 @@ jobs:
           git config user.name "datagems-ci[bot]"
           git config user.email "datagems-ci[bot]@datagems.eu"
 
-      # Remove or comment the next step – it’s what kills the job
-      # - name: Fetch existing gh-pages branch
-      #  run: git fetch origin gh-pages:gh-pages
+      - name: Fetch existing gh-pages branch
+        run: git fetch origin gh-pages:gh-pages
 
       - name: Publish docs
         run: |
