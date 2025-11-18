@@ -1,0 +1,51 @@
+name: Deploy Docs (On-Demand)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Documentation Version"
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   # needed for checkout + pushing to the target repo
+
+    defaults:
+      run:
+        working-directory: docs
+
+    steps:
+      - name: Checkout repository (the -docs one)
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install mkdocs mkdocs-material mike neoteroi-mkdocs pymdown-extensions mkdocstrings mkdocstrings-python
+
+      - name: Deploy to private in-dataset-discovery repo
+        env:
+          # Create this secret in the -docs repo: Settings → Secrets and variables → Actions
+          TARGET_TOKEN: ${{ secrets.IN_DATASET_DISCOVERY_TOKEN }}
+        run: |
+          # Configure git (name/email is just cosmetic)
+          git config user.name "datagems-ci[bot]"
+          git config user.email "datagems-ci[bot]@datagems.eu"
+
+          # Add the private target repo as a second remote
+          git remote add target https://x-access-token:${TARGET_TOKEN}@github.com/ORG_OR_USER/in-dataset-discovery.git
+
+          # Deploy with mike to the private repo's gh-pages branch
+          mike deploy --push --remote target --branch gh-pages ${{ github.event.inputs.version }} latest
+          mike set-default --push --remote target --branch gh-pages latest
+
+          # Optional: add extra aliases if you want (stable, dev, etc.)
+          # mike alias --push --remote target --branch gh-pages latest stable
