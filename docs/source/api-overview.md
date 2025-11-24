@@ -27,38 +27,54 @@ Performs geospatial queries using natural language to find locations, generate O
 
 *   **Example Request:**
     ```
-    GET /text2geo?question=What are the coordinates in Berlin?
+    GET /text2geo?question=What are the coordinates in Zurich?
     ```
 
 *   **Response Body (Success):**
     ```json
     {
-      "place": "berlin",
       "most_relevant_wikidata": {
-        "place": "Berlin",
-        "wiki_id": "Q64",
+        "place": "Zurich",
+        "reasoning": "The question asks for the city of Zurich, which is best represented by the entity with ID Q72. This entity is described as the capital of the canton of Zurich and is a municipality and city in Switzerland. It also has 'found_osm_json: True', which gives it priority if multiple similar entities were found. Other entities like universities or sports clubs are not relevant to the context of the question, which specifically asks for the city.",
+        "wiki_id": "Q72",
         "wiki_properties": {
-          "label": "Berlin",
-          "description": "capital and largest city of Germany",
-          "coordinate_location": "52.517, 13.3889",
-          "found_osm_json": true
-        },
-        "reasoning": "..."
+          "aliases": "City of Zurich, ZH, Stadt Zürich, Zurich, Switzerland, Zürich",
+          "coordinate location": "47.37444444444444, 8.54111111111111",
+          "country": "Switzerland, Old Swiss Confederacy, Helvetic Republic, Switzerland",
+          "description": "capital of the canton of Zurich, Switzerland",
+          "found_osm_json": true,
+          "instance of": "municipality of Switzerland, city of Switzerland, cantonal capital of Switzerland, college town, largest city, big city",
+          "label": "Zurich",
+          "located in the administrative territorial entity": "Zürich District",
+          "part of": "Greater Zurich Area, Zurich metropolitan area, Canton of Zürich"
+        }
       },
       "oql": {
-        "reasoning": "Generated Overpass QL query...",
-        "OQL": "area[\"ISO3166-1\"=\"DE\"]->.searchArea;(nwr[\"wikidata\"=\"Q64\"];);"
+        "OQL": "area[\"ISO3166-1\"=\"CH\"]->.searchArea;(nwr[\"wikidata\"=\"Q72\"];);",
+        "reasoning": "Generated Overpass QL query using Wikidata ID Q72 and country ISO alpha-2 code CH."
       },
+      "place": "zurich",
       "results": {
-        "points": [{"lon": "13.3889", "lat": "52.517"}],
-        "geojson_data": {"type": "FeatureCollection", "features": []},
         "bounds": {
-          "minlat": 52.3383,
-          "minlon": 13.0883,
-          "maxlat": 52.6755,
-          "maxlon": 13.7611
+          "maxlat": 47.4346662,
+          "maxlon": 8.6254413,
+          "minlat": 47.3202187,
+          "minlon": 8.4480061
         },
-        "center": [52.517, 13.3889]
+        "center": [
+          47.4,
+          8.5
+        ],
+        "geojson_data": {
+          "features": [],
+          "type": "FeatureCollection"
+        },
+        "points": [
+          {
+            "lat": "47.4",
+            "lon": "8.5"
+          }
+        ]
       }
     }
     ```
