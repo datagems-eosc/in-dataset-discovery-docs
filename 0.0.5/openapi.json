@@ -1,0 +1,771 @@
+{
+  "components": {
+    "schemas": {
+      "Bounds": {
+        "properties": {
+          "maxlat": {
+            "description": "Maximum latitude.",
+            "format": "float",
+            "type": "number"
+          },
+          "maxlon": {
+            "description": "Maximum longitude.",
+            "format": "float",
+            "type": "number"
+          },
+          "minlat": {
+            "description": "Minimum latitude.",
+            "format": "float",
+            "type": "number"
+          },
+          "minlon": {
+            "description": "Minimum longitude.",
+            "format": "float",
+            "type": "number"
+          }
+        },
+        "required": [
+          "minlat",
+          "minlon",
+          "maxlat",
+          "maxlon"
+        ],
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "code": {
+            "description": "HTTP status code",
+            "type": "integer"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "error"
+        ],
+        "type": "object"
+      },
+      "FailedDependencyMessage": {
+        "properties": {
+          "correlationId": {
+            "nullable": true,
+            "type": "string"
+          },
+          "payload": {
+            "nullable": true,
+            "type": "object"
+          },
+          "source": {
+            "type": "string"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "statusCode",
+          "source"
+        ],
+        "type": "object"
+      },
+      "FailedDependencyResponse": {
+        "properties": {
+          "code": {
+            "example": 104,
+            "type": "integer"
+          },
+          "error": {
+            "example": "error communicating with underlying service",
+            "type": "string"
+          },
+          "message": {
+            "$ref": "#/components/schemas/FailedDependencyMessage"
+          }
+        },
+        "required": [
+          "code",
+          "error",
+          "message"
+        ],
+        "type": "object"
+      },
+      "GeospatialResponse": {
+        "properties": {
+          "most_relevant_wikidata": {
+            "$ref": "#/components/schemas/MostRelevantWikidata",
+            "description": "The most relevant Wikidata entity related to the query."
+          },
+          "oql": {
+            "$ref": "#/components/schemas/OQLResponse",
+            "description": "The OverpassQL query generated from the geospatial question."
+          },
+          "place": {
+            "description": "The place identified in the geospatial query.",
+            "type": "string"
+          },
+          "results": {
+            "$ref": "#/components/schemas/GeospatialResults",
+            "description": "The results of the OverpassQL query includes points, bounding box, multipolygons and centroid."
+          }
+        },
+        "required": [
+          "place",
+          "most_relevant_wikidata",
+          "oql",
+          "results"
+        ],
+        "type": "object"
+      },
+      "GeospatialResults": {
+        "properties": {
+          "bounds": {
+            "$ref": "#/components/schemas/Bounds",
+            "description": "Bounding box of the results."
+          },
+          "center": {
+            "description": "Center coordinates as [lat, lon].",
+            "items": {
+              "format": "float",
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "geojson_data": {
+            "additionalProperties": true,
+            "description": "GeoJSON feature collection data.",
+            "type": "object"
+          },
+          "points": {
+            "description": "List of points with coordinates.",
+            "items": {
+              "$ref": "#/components/schemas/Point"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "points",
+          "geojson_data",
+          "bounds",
+          "center"
+        ],
+        "type": "object"
+      },
+      "InputParam": {
+        "properties": {
+          "lat": {
+            "description": "Latitude coordinate.",
+            "format": "float",
+            "type": "number"
+          },
+          "lon": {
+            "description": "Longitude coordinate.",
+            "format": "float",
+            "type": "number"
+          }
+        },
+        "required": [
+          "lon",
+          "lat"
+        ],
+        "type": "object"
+      },
+      "MostRelevantWikidata": {
+        "properties": {
+          "place": {
+            "description": "The place name.",
+            "type": "string"
+          },
+          "reasoning": {
+            "description": "Reasoning for selecting this entity.",
+            "type": "string"
+          },
+          "wiki_id": {
+            "description": "The Wikidata ID.",
+            "type": "string"
+          },
+          "wiki_properties": {
+            "$ref": "#/components/schemas/WikiProperties",
+            "description": "Properties of the Wikidata entity."
+          }
+        },
+        "required": [
+          "place",
+          "wiki_id",
+          "wiki_properties",
+          "reasoning"
+        ],
+        "type": "object"
+      },
+      "OQLResponse": {
+        "properties": {
+          "OQL": {
+            "description": "The OverpassQL query string.",
+            "type": "string"
+          },
+          "reasoning": {
+            "description": "Reasoning for the generated OQL query.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reasoning",
+          "OQL"
+        ],
+        "type": "object"
+      },
+      "OutputParams": {
+        "properties": {
+          "coordinates": {
+            "description": "List of coordinate parameter names.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "coordinates"
+        ],
+        "type": "object"
+      },
+      "Point": {
+        "properties": {
+          "lat": {
+            "description": "Latitude as string.",
+            "type": "string"
+          },
+          "lon": {
+            "description": "Longitude as string.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "lon",
+          "lat"
+        ],
+        "type": "object"
+      },
+      "ResultsModel": {
+        "additionalProperties": true,
+        "properties": {
+          "points": {
+            "description": "List of points with coordinates.",
+            "items": {
+              "items": {
+                "format": "float",
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "points"
+        ],
+        "type": "object"
+      },
+      "SQLQueryParameters": {
+        "additionalProperties": true,
+        "properties": {
+          "db_info": {
+            "additionalProperties": true,
+            "description": "Database connection information.",
+            "properties": {
+              "db_database": {
+                "type": "string"
+              },
+              "db_host": {
+                "type": "string"
+              },
+              "db_pass": {
+                "type": "string"
+              },
+              "db_port": {
+                "type": "integer"
+              },
+              "db_schema": {
+                "type": "string"
+              },
+              "db_username": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "db_host",
+              "db_username",
+              "db_pass",
+              "db_database",
+              "db_schema"
+            ],
+            "type": "object"
+          },
+          "results": {
+            "$ref": "#/components/schemas/ResultsModel",
+            "description": "The results containing points for SQL query."
+          }
+        },
+        "required": [
+          "results",
+          "db_info"
+        ],
+        "type": "object"
+      },
+      "SQLResults": {
+        "properties": {
+          "data": {
+            "description": "Results data from the SQL query.",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "status": {
+            "description": "Status of the SQL query execution.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object"
+      },
+      "Text2SQLQuery": {
+        "properties": {
+          "parameters": {
+            "$ref": "#/components/schemas/SQLQueryParameters",
+            "description": "The parameters for the SQL query, including results."
+          },
+          "question": {
+            "description": "The text question to be converted to SQL.",
+            "example": "What are the average mean temperatures in the coordinates (lon, lat) in year 2020?",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question",
+          "parameters"
+        ],
+        "type": "object"
+      },
+      "Text2SQLResponse": {
+        "properties": {
+          "input_params": {
+            "description": "Input parameters with coordinates.",
+            "items": {
+              "$ref": "#/components/schemas/InputParam"
+            },
+            "type": "array"
+          },
+          "message": {
+            "description": "Message describing the operation result.",
+            "type": "string"
+          },
+          "model_name": {
+            "description": "The model name used for SQL generation.",
+            "type": "string"
+          },
+          "output_params": {
+            "$ref": "#/components/schemas/OutputParams",
+            "description": "Output parameter definitions."
+          },
+          "params": {
+            "additionalProperties": true,
+            "description": "Parameters used in the query.",
+            "type": "object"
+          },
+          "question": {
+            "description": "The original question that was converted to SQL.",
+            "type": "string"
+          },
+          "reasoning": {
+            "description": "Reasoning behind the SQL query generation.",
+            "type": "string"
+          },
+          "sql_pattern": {
+            "description": "The SQL pattern/template generated.",
+            "type": "string"
+          },
+          "sql_query": {
+            "description": "The final SQL query with parameters filled in.",
+            "type": "string"
+          },
+          "sql_results": {
+            "$ref": "#/components/schemas/SQLResults",
+            "description": "Results from executing the SQL query."
+          },
+          "status": {
+            "description": "Status of the operation.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "message",
+          "params",
+          "question",
+          "model_name",
+          "sql_pattern",
+          "input_params",
+          "output_params",
+          "reasoning",
+          "sql_query",
+          "sql_results"
+        ],
+        "type": "object"
+      },
+      "ValidationErrorDetail": {
+        "properties": {
+          "Key": {
+            "type": "string"
+          },
+          "Value": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "Key",
+          "Value"
+        ],
+        "type": "object"
+      },
+      "ValidationErrorResponse": {
+        "properties": {
+          "code": {
+            "example": 102,
+            "type": "integer"
+          },
+          "error": {
+            "example": "validation error",
+            "type": "string"
+          },
+          "message": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationErrorDetail"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "code",
+          "error",
+          "message"
+        ],
+        "type": "object"
+      },
+      "WikiProperties": {
+        "properties": {
+          "aliases": {
+            "description": "Aliases for the Wikidata entity.",
+            "type": "string"
+          },
+          "coordinate location": {
+            "description": "Coordinate location.",
+            "type": "string"
+          },
+          "country": {
+            "description": "Country information.",
+            "type": "string"
+          },
+          "description": {
+            "description": "The description of the Wikidata entity.",
+            "type": "string"
+          },
+          "found_osm_json": {
+            "description": "Whether OSM JSON was found.",
+            "type": "boolean"
+          },
+          "instance of": {
+            "description": "Instance types of the entity.",
+            "type": "string"
+          },
+          "label": {
+            "description": "The label of the Wikidata entity.",
+            "type": "string"
+          },
+          "located in the administrative territorial entity": {
+            "description": "Administrative location.",
+            "type": "string"
+          },
+          "part of": {
+            "description": "What the entity is part of.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "description",
+          "aliases",
+          "instance of",
+          "part of",
+          "country",
+          "located in the administrative territorial entity",
+          "coordinate location",
+          "found_osm_json"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2Bearer": {
+        "bearerFormat": "JWT",
+        "description": "JWT token for authentication, obtained from the OIDC provider.",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "name": "DataGEMS helpdesk",
+      "url": "https://datagems.eu/contact-us/"
+    },
+    "description": "The In-Dataset Discovery Service provides a secure API for performing natural language exploration queries on structured or unstructured data within datasets. It supports geospatial queries and text-to-SQL conversion using LLM capabilities.",
+    "license": {
+      "name": "EUPL-1.2 license",
+      "url": "https://interoperable-europe.ec.europa.eu/sites/default/files/custom-page/attachment/2020-03/EUPL-1.2%20EN.txt"
+    },
+    "termsOfService": "https://datagems.eu/terms",
+    "title": "DataGEMS In-Dataset Discovery Service",
+    "version": "0.3.0"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/": {
+      "get": {
+        "description": "Returns the API status.",
+        "operationId": "read_root",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "In Data Exploration API is running.",
+                      "type": "string"
+                    },
+                    "status": {
+                      "example": "success",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Root",
+        "tags": [
+          "Monitoring"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Checks the availability of the API service. Returns a 200 OK if the service is healthy. This endpoint does not require authentication.",
+        "operationId": "health_check",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "example": "ok",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health Check",
+        "tags": [
+          "Monitoring"
+        ]
+      }
+    },
+    "/text2geo": {
+      "get": {
+        "description": "Processes a natural language geospatial question, identifies the place using Wikidata, generates an OverpassQL query, and returns geospatial results including coordinates, GeoJSON data, and bounding boxes.",
+        "operationId": "geospatial_query",
+        "parameters": [
+          {
+            "description": "The geospatial query question to be processed.",
+            "in": "query",
+            "name": "question",
+            "required": true,
+            "schema": {
+              "example": "What are the coordinates in Berlin?",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeospatialResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 102,
+                  "error": "validation error",
+                  "message": [
+                    {
+                      "Key": "question",
+                      "Value": [
+                        "Field required"
+                      ]
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "OAuth2Bearer": []
+          }
+        ],
+        "summary": "Geospatial Query",
+        "tags": [
+          "Geospatial"
+        ]
+      }
+    },
+    "/text2sql": {
+      "post": {
+        "description": "Takes a natural language question and database connection information, generates a SQL query using LLM capabilities, and executes it to return results.",
+        "operationId": "text2sql_query",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Text2SQLQuery"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Text2SQLResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 102,
+                  "error": "validation error",
+                  "message": [
+                    {
+                      "Key": "question",
+                      "Value": [
+                        "Field required"
+                      ]
+                    },
+                    {
+                      "Key": "parameters.results.points",
+                      "Value": [
+                        "Field required"
+                      ]
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "OAuth2Bearer": []
+          }
+        ],
+        "summary": "Text-to-SQL Query",
+        "tags": [
+          "Text-to-SQL"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Development server",
+      "url": "https://datagems-dev.scayle.es/in-dataset-discovery"
+    }
+  ],
+  "tags": [
+    {
+      "description": "Endpoints for performing geospatial queries using natural language.",
+      "name": "Text-to-Geo"
+    },
+    {
+      "description": "Endpoints for converting natural language questions to SQL queries.",
+      "name": "Text-to-SQL"
+    },
+    {
+      "description": "Endpoints for monitoring the service health.",
+      "name": "Monitoring"
+    }
+  ]
+}
