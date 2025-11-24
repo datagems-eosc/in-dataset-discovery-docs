@@ -573,7 +573,35 @@
         ]
       }
     },
-    "/geospatial": {
+    "/health": {
+      "get": {
+        "description": "Checks the availability of the API service. Returns a 200 OK if the service is healthy. This endpoint does not require authentication.",
+        "operationId": "health_check",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "example": "ok",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health Check",
+        "tags": [
+          "Monitoring"
+        ]
+      }
+    },
+    "/text2geo": {
       "get": {
         "description": "Processes a natural language geospatial question, identifies the place using Wikidata, generates an OverpassQL query, and returns geospatial results including coordinates, GeoJSON data, and bounding boxes.",
         "operationId": "geospatial_query",
@@ -641,34 +669,6 @@
         "summary": "Geospatial Query",
         "tags": [
           "Geospatial"
-        ]
-      }
-    },
-    "/health": {
-      "get": {
-        "description": "Checks the availability of the API service. Returns a 200 OK if the service is healthy. This endpoint does not require authentication.",
-        "operationId": "health_check",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "status": {
-                      "example": "ok",
-                      "type": "string"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Health Check",
-        "tags": [
-          "Monitoring"
         ]
       }
     },
@@ -757,7 +757,7 @@
   "tags": [
     {
       "description": "Endpoints for performing geospatial queries using natural language.",
-      "name": "Geospatial"
+      "name": "Text-to-Geo"
     },
     {
       "description": "Endpoints for converting natural language questions to SQL queries.",
