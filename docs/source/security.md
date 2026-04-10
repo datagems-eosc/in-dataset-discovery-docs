@@ -10,7 +10,7 @@ The service validates incoming JWTs against the OIDC provider's public keys. The
 
 Authorization is role-based. The service checks for specific roles within the validated JWT's claims.
 
-- **Required Roles:** The `/geospatial` and `/text2sql` endpoints may have different authentication requirements depending on the deployment configuration. The `/health` endpoint is publicly accessible.
+- **Required Roles:** All operational endpoints except `/health` require authentication, including `/text2geo`, `/text2sql`, `/textQuestionAnswer`, and `/explore`.
 
 If a user attempts to access an endpoint without the required role, the API will respond with a `403 Forbidden` error.
 

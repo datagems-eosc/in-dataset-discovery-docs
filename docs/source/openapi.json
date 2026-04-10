@@ -2,25 +2,31 @@
   "components": {
     "schemas": {
       "Bounds": {
+        "example": {
+          "maxlat": 47.4346662,
+          "maxlon": 8.6254413,
+          "minlat": 47.3202187,
+          "minlon": 8.4480061
+        },
         "properties": {
           "maxlat": {
             "description": "Maximum latitude.",
-            "format": "float",
+            "title": "Maxlat",
             "type": "number"
           },
           "maxlon": {
             "description": "Maximum longitude.",
-            "format": "float",
+            "title": "Maxlon",
             "type": "number"
           },
           "minlat": {
             "description": "Minimum latitude.",
-            "format": "float",
+            "title": "Minlat",
             "type": "number"
           },
           "minlon": {
             "description": "Minimum longitude.",
-            "format": "float",
+            "title": "Minlon",
             "type": "number"
           }
         },
@@ -30,70 +36,55 @@
           "maxlat",
           "maxlon"
         ],
-        "type": "object"
-      },
-      "ErrorResponse": {
-        "properties": {
-          "code": {
-            "description": "HTTP status code",
-            "type": "integer"
-          },
-          "error": {
-            "description": "Error message",
-            "type": "string"
-          }
-        },
-        "required": [
-          "code",
-          "error"
-        ],
-        "type": "object"
-      },
-      "FailedDependencyMessage": {
-        "properties": {
-          "correlationId": {
-            "nullable": true,
-            "type": "string"
-          },
-          "payload": {
-            "nullable": true,
-            "type": "object"
-          },
-          "source": {
-            "type": "string"
-          },
-          "statusCode": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "statusCode",
-          "source"
-        ],
-        "type": "object"
-      },
-      "FailedDependencyResponse": {
-        "properties": {
-          "code": {
-            "example": 104,
-            "type": "integer"
-          },
-          "error": {
-            "example": "error communicating with underlying service",
-            "type": "string"
-          },
-          "message": {
-            "$ref": "#/components/schemas/FailedDependencyMessage"
-          }
-        },
-        "required": [
-          "code",
-          "error",
-          "message"
-        ],
+        "title": "Bounds",
         "type": "object"
       },
       "GeospatialResponse": {
+        "example": {
+          "most_relevant_wikidata": {
+            "place": "Zurich",
+            "reasoning": "The question asks for the city of Zurich, which is best represented by the entity with ID Q72. This entity is described as the capital of the canton of Zurich and is a municipality and city in Switzerland. It also has 'found_osm_json: True', which gives it priority if multiple similar entities were found. Other entities like universities or sports clubs are not relevant to the context of the question, which specifically asks for the city.",
+            "wiki_id": "Q72",
+            "wiki_properties": {
+              "aliases": "City of Zurich, ZH, Stadt Z\u00fcrich, Zurich, Switzerland, Z\u00fcrich",
+              "coordinate location": "47.37444444444444, 8.54111111111111",
+              "country": "Switzerland, Old Swiss Confederacy, Helvetic Republic, Switzerland",
+              "description": "capital of the canton of Zurich, Switzerland",
+              "found_osm_json": true,
+              "instance of": "municipality of Switzerland, city of Switzerland, cantonal capital of Switzerland, college town, largest city, big city",
+              "label": "Zurich",
+              "located in the administrative territorial entity": "Z\u00fcrich District",
+              "part of": "Greater Zurich Area, Zurich metropolitan area, Canton of Z\u00fcrich"
+            }
+          },
+          "oql": {
+            "OQL": "area[\"ISO3166-1\"=\"CH\"]->.searchArea;(nwr[\"wikidata\"=\"Q72\"];);",
+            "reasoning": "Generated Overpass QL query using Wikidata ID Q72 and country ISO alpha-2 code CH."
+          },
+          "place": "zurich",
+          "results": {
+            "bounds": {
+              "maxlat": 47.4346662,
+              "maxlon": 8.6254413,
+              "minlat": 47.3202187,
+              "minlon": 8.4480061
+            },
+            "center": [
+              47.4,
+              8.5
+            ],
+            "geojson_data": {
+              "features": [],
+              "type": "FeatureCollection"
+            },
+            "points": [
+              {
+                "lat": "47.4",
+                "lon": "8.5"
+              }
+            ]
+          }
+        },
         "properties": {
           "most_relevant_wikidata": {
             "$ref": "#/components/schemas/MostRelevantWikidata",
@@ -105,6 +96,7 @@
           },
           "place": {
             "description": "The place identified in the geospatial query.",
+            "title": "Place",
             "type": "string"
           },
           "results": {
@@ -118,9 +110,32 @@
           "oql",
           "results"
         ],
+        "title": "GeospatialResponse",
         "type": "object"
       },
       "GeospatialResults": {
+        "example": {
+          "bounds": {
+            "maxlat": 47.4346662,
+            "maxlon": 8.6254413,
+            "minlat": 47.3202187,
+            "minlon": 8.4480061
+          },
+          "center": [
+            47.4,
+            8.5
+          ],
+          "geojson_data": {
+            "features": [],
+            "type": "FeatureCollection"
+          },
+          "points": [
+            {
+              "lat": "47.4",
+              "lon": "8.5"
+            }
+          ]
+        },
         "properties": {
           "bounds": {
             "$ref": "#/components/schemas/Bounds",
@@ -129,14 +144,15 @@
           "center": {
             "description": "Center coordinates as [lat, lon].",
             "items": {
-              "format": "float",
               "type": "number"
             },
+            "title": "Center",
             "type": "array"
           },
           "geojson_data": {
             "additionalProperties": true,
             "description": "GeoJSON feature collection data.",
+            "title": "Geojson Data",
             "type": "object"
           },
           "points": {
@@ -144,6 +160,7 @@
             "items": {
               "$ref": "#/components/schemas/Point"
             },
+            "title": "Points",
             "type": "array"
           }
         },
@@ -153,39 +170,64 @@
           "bounds",
           "center"
         ],
+        "title": "GeospatialResults",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
         "type": "object"
       },
       "InputParam": {
-        "properties": {
-          "lat": {
-            "description": "Latitude coordinate.",
-            "format": "float",
-            "type": "number"
-          },
-          "lon": {
-            "description": "Longitude coordinate.",
-            "format": "float",
-            "type": "number"
-          }
+        "additionalProperties": true,
+        "description": "Input parameter model that accepts any dictionary structure.\n\nNote: The keys don't need to match output_params since input_params\ncan have different key names (e.g., 'latitude'/'longitude' vs 'lat'/'lon').",
+        "example": {
+          "lat": 52.52,
+          "lon": 13.405
         },
-        "required": [
-          "lon",
-          "lat"
-        ],
+        "properties": {},
+        "title": "InputParam",
         "type": "object"
       },
       "MostRelevantWikidata": {
+        "example": {
+          "place": "Zurich",
+          "reasoning": "The question asks for the city of Zurich, which is best represented by the entity with ID Q72. This entity is described as the capital of the canton of Zurich and is a municipality and city in Switzerland. It also has 'found_osm_json: True', which gives it priority if multiple similar entities were found. Other entities like universities or sports clubs are not relevant to the context of the question, which specifically asks for the city.",
+          "wiki_id": "Q72",
+          "wiki_properties": {
+            "aliases": "City of Zurich, ZH, Stadt Z\u00fcrich, Zurich, Switzerland, Z\u00fcrich",
+            "coordinate location": "47.37444444444444, 8.54111111111111",
+            "country": "Switzerland, Old Swiss Confederacy, Helvetic Republic, Switzerland",
+            "description": "capital of the canton of Zurich, Switzerland",
+            "found_osm_json": true,
+            "instance of": "municipality of Switzerland, city of Switzerland, cantonal capital of Switzerland, college town, largest city, big city",
+            "label": "Zurich",
+            "located in the administrative territorial entity": "Z\u00fcrich District",
+            "part of": "Greater Zurich Area, Zurich metropolitan area, Canton of Z\u00fcrich"
+          }
+        },
         "properties": {
           "place": {
             "description": "The place name.",
+            "title": "Place",
             "type": "string"
           },
           "reasoning": {
             "description": "Reasoning for selecting this entity.",
+            "title": "Reasoning",
             "type": "string"
           },
           "wiki_id": {
             "description": "The Wikidata ID.",
+            "title": "Wiki Id",
             "type": "string"
           },
           "wiki_properties": {
@@ -199,16 +241,23 @@
           "wiki_properties",
           "reasoning"
         ],
+        "title": "MostRelevantWikidata",
         "type": "object"
       },
       "OQLResponse": {
+        "example": {
+          "OQL": "area[\"ISO3166-1\"=\"CH\"]->.searchArea;(nwr[\"wikidata\"=\"Q72\"];);",
+          "reasoning": "Generated Overpass QL query using Wikidata ID Q72 and country ISO alpha-2 code CH."
+        },
         "properties": {
           "OQL": {
             "description": "The OverpassQL query string.",
+            "title": "Oql",
             "type": "string"
           },
           "reasoning": {
             "description": "Reasoning for the generated OQL query.",
+            "title": "Reasoning",
             "type": "string"
           }
         },
@@ -216,31 +265,46 @@
           "reasoning",
           "OQL"
         ],
+        "title": "OQLResponse",
         "type": "object"
       },
       "OutputParams": {
+        "example": {
+          "coordinates": [
+            "lat",
+            "lon"
+          ]
+        },
         "properties": {
           "coordinates": {
             "description": "List of coordinate parameter names.",
             "items": {
               "type": "string"
             },
+            "title": "Coordinates",
             "type": "array"
           }
         },
         "required": [
           "coordinates"
         ],
+        "title": "OutputParams",
         "type": "object"
       },
       "Point": {
+        "example": {
+          "lat": "47.4",
+          "lon": "8.5"
+        },
         "properties": {
           "lat": {
             "description": "Latitude as string.",
+            "title": "Lat",
             "type": "string"
           },
           "lon": {
             "description": "Longitude as string.",
+            "title": "Lon",
             "type": "string"
           }
         },
@@ -248,75 +312,145 @@
           "lon",
           "lat"
         ],
+        "title": "Point",
+        "type": "object"
+      },
+      "RagOutput": {
+        "properties": {
+          "query_time": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "RAG query execution time in milliseconds.",
+            "title": "Query Time"
+          },
+          "results": {
+            "description": "Retrieved chunks from the RAG system.",
+            "items": {
+              "$ref": "#/components/schemas/RagResultItem"
+            },
+            "title": "Results",
+            "type": "array"
+          }
+        },
+        "required": [
+          "results"
+        ],
+        "title": "RagOutput",
+        "type": "object"
+      },
+      "RagResultItem": {
+        "properties": {
+          "content": {
+            "description": "Retrieved content chunk from the RAG system.",
+            "title": "Content",
+            "type": "string"
+          },
+          "dataset_id": {
+            "description": "Dataset identifier for the source.",
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "object_id": {
+            "description": "Object identifier for the source chunk.",
+            "title": "Object Id",
+            "type": "string"
+          },
+          "similarity": {
+            "description": "Similarity score returned by the RAG system.",
+            "title": "Similarity",
+            "type": "number"
+          }
+        },
+        "required": [
+          "content",
+          "dataset_id",
+          "object_id",
+          "similarity"
+        ],
+        "title": "RagResultItem",
         "type": "object"
       },
       "ResultsModel": {
         "additionalProperties": true,
+        "example": {
+          "points": [
+            [
+              8.4,
+              47.4
+            ],
+            [
+              8.5,
+              47.4
+            ]
+          ]
+        },
         "properties": {
           "points": {
             "description": "List of points with coordinates.",
             "items": {
               "items": {
-                "format": "float",
                 "type": "number"
               },
               "type": "array"
             },
+            "title": "Points",
             "type": "array"
           }
         },
         "required": [
           "points"
         ],
+        "title": "ResultsModel",
         "type": "object"
       },
       "SQLQueryParameters": {
         "additionalProperties": true,
+        "example": {
+          "db_database": "database_name",
+          "db_host": "the_db_host_ip",
+          "db_pass": "db_password",
+          "db_port": 5432,
+          "db_schema": "database_schema",
+          "db_username": "db_username"
+        },
         "properties": {
           "db_info": {
             "additionalProperties": true,
             "description": "Database connection information.",
-            "properties": {
-              "db_database": {
-                "type": "string"
-              },
-              "db_host": {
-                "type": "string"
-              },
-              "db_pass": {
-                "type": "string"
-              },
-              "db_port": {
-                "type": "integer"
-              },
-              "db_schema": {
-                "type": "string"
-              },
-              "db_username": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "db_host",
-              "db_username",
-              "db_pass",
-              "db_database",
-              "db_schema"
-            ],
+            "title": "Db Info",
             "type": "object"
           },
           "results": {
-            "$ref": "#/components/schemas/ResultsModel",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResultsModel"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "The results containing points for SQL query."
           }
         },
         "required": [
-          "results",
           "db_info"
         ],
+        "title": "SQLQueryParameters",
         "type": "object"
       },
       "SQLResults": {
+        "example": {
+          "data": [
+            {}
+          ],
+          "status": "success"
+        },
         "properties": {
           "data": {
             "description": "Results data from the SQL query.",
@@ -324,10 +458,12 @@
               "additionalProperties": true,
               "type": "object"
             },
+            "title": "Data",
             "type": "array"
           },
           "status": {
             "description": "Status of the SQL query execution.",
+            "title": "Status",
             "type": "string"
           }
         },
@@ -335,17 +471,67 @@
           "status",
           "data"
         ],
+        "title": "SQLResults",
+        "type": "object"
+      },
+      "SummarySource": {
+        "properties": {
+          "dataset_id": {
+            "description": "Dataset identifier for the source.",
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "object_id": {
+            "description": "Object identifier for the source chunk.",
+            "title": "Object Id",
+            "type": "string"
+          },
+          "similarity": {
+            "description": "Similarity score for this source.",
+            "title": "Similarity",
+            "type": "number"
+          }
+        },
+        "required": [
+          "dataset_id",
+          "object_id",
+          "similarity"
+        ],
+        "title": "SummarySource",
         "type": "object"
       },
       "Text2SQLQuery": {
         "properties": {
           "parameters": {
             "$ref": "#/components/schemas/SQLQueryParameters",
-            "description": "The parameters for the SQL query, including results."
+            "description": "The parameters for the SQL query, including results.",
+            "example": {
+              "db_info": {
+                "db_database": "database_name",
+                "db_host": "the_db_host_ip",
+                "db_pass": "db_password",
+                "db_port": 5432,
+                "db_schema": "database_schema",
+                "db_username": "db_username"
+              },
+              "results": {
+                "points": [
+                  [
+                    47.4,
+                    8.4
+                  ],
+                  [
+                    47.4,
+                    8.5
+                  ]
+                ]
+              }
+            }
           },
           "question": {
             "description": "The text question to be converted to SQL.",
-            "example": "What are the average mean temperatures in the coordinates (lon, lat) in year 2020?",
+            "example": "What are the average mean temperatures in the coordinates (latitude, longitude) in year 2020?",
+            "title": "Question",
             "type": "string"
           }
         },
@@ -353,83 +539,314 @@
           "question",
           "parameters"
         ],
+        "title": "Text2SQLQuery",
         "type": "object"
       },
       "Text2SQLResponse": {
+        "example": {
+          "input_params": [
+            {
+              "latitude": 47.4,
+              "longitude": 8.4
+            },
+            {
+              "latitude": 47.4,
+              "longitude": 8.5
+            }
+          ],
+          "message": "Successfully generated SQL query on the first attempt.",
+          "model_name": "qwen-qwq",
+          "output_params": {
+            "coordinates": [
+              "latitude",
+              "longitude"
+            ]
+          },
+          "params": {
+            "points": [
+              [
+                47.4,
+                8.4
+              ],
+              [
+                47.4,
+                8.5
+              ]
+            ]
+          },
+          "question": "What are the average mean temperatures in the coordinates (lat, lon) in year 2020?",
+          "reasoning": "The SQL template calculates the average temperature in Celsius for the specified coordinates in 2020. The coordinates are rounded to 1 decimal place for matching. The meteo_tmean table is used for temperature data (tmean in Kelvin), converted to Celsius by subtracting 273.15. The WHERE clause filters records to the year 2020 and matches the rounded coordinates from the input parameters.",
+          "sql_pattern": "SELECT ROUND(CAST(latitude AS NUMERIC), 1) AS rounded_latitude, ROUND(CAST(longitude AS NUMERIC), 1) AS rounded_longitude, AVG(tmean - 273.15) AS avg_temp_celsius FROM era5_land2.meteo_tmean WHERE EXTRACT(YEAR FROM time) = 2020 AND (ROUND(CAST(latitude AS NUMERIC), 1), ROUND(CAST(longitude AS NUMERIC), 1)) IN {coordinates} GROUP BY rounded_latitude, rounded_longitude",
+          "sql_query": "SELECT ROUND(CAST(latitude AS NUMERIC), 1) AS rounded_latitude, ROUND(CAST(longitude AS NUMERIC), 1) AS rounded_longitude, AVG(tmean - 273.15) AS avg_temp_celsius FROM era5_land2.meteo_tmean WHERE EXTRACT(YEAR FROM time) = 2020 AND (ROUND(CAST(latitude AS NUMERIC), 1), ROUND(CAST(longitude AS NUMERIC), 1)) IN ((47.4, 8.4), (47.4, 8.5)) GROUP BY rounded_latitude, rounded_longitude",
+          "sql_results": {
+            "data": [
+              {
+                "avg_temp_celsius": 10.613293907290531,
+                "rounded_latitude": "47.4",
+                "rounded_longitude": "8.4"
+              },
+              {
+                "avg_temp_celsius": 10.440176525011696,
+                "rounded_latitude": "47.4",
+                "rounded_longitude": "8.5"
+              }
+            ],
+            "status": "success"
+          },
+          "status": "success"
+        },
         "properties": {
           "input_params": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/InputParam"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Input parameters with coordinates.",
-            "items": {
-              "$ref": "#/components/schemas/InputParam"
-            },
-            "type": "array"
+            "title": "Input Params"
           },
           "message": {
             "description": "Message describing the operation result.",
+            "title": "Message",
             "type": "string"
           },
           "model_name": {
             "description": "The model name used for SQL generation.",
+            "title": "Model Name",
             "type": "string"
           },
           "output_params": {
-            "$ref": "#/components/schemas/OutputParams",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OutputParams"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Output parameter definitions."
           },
           "params": {
-            "additionalProperties": true,
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Parameters used in the query.",
-            "type": "object"
+            "title": "Params"
           },
           "question": {
             "description": "The original question that was converted to SQL.",
+            "title": "Question",
             "type": "string"
           },
           "reasoning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Reasoning behind the SQL query generation.",
-            "type": "string"
+            "title": "Reasoning"
           },
           "sql_pattern": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "The SQL pattern/template generated.",
-            "type": "string"
+            "title": "Sql Pattern"
           },
           "sql_query": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "The final SQL query with parameters filled in.",
-            "type": "string"
+            "title": "Sql Query"
           },
           "sql_results": {
-            "$ref": "#/components/schemas/SQLResults",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SQLResults"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Results from executing the SQL query."
           },
           "status": {
             "description": "Status of the operation.",
+            "title": "Status",
             "type": "string"
           }
         },
         "required": [
           "status",
           "message",
-          "params",
           "question",
-          "model_name",
-          "sql_pattern",
-          "input_params",
-          "output_params",
-          "reasoning",
-          "sql_query",
-          "sql_results"
+          "model_name"
         ],
+        "title": "Text2SQLResponse",
+        "type": "object"
+      },
+      "TextQuestionAnswerQuery": {
+        "properties": {
+          "question": {
+            "description": "The user question that should be answered from the provided RAG chunks.",
+            "example": "What is the chief town of the island of COPRAJA?",
+            "title": "Question",
+            "type": "string"
+          },
+          "rag_output": {
+            "$ref": "#/components/schemas/RagOutput",
+            "description": "Raw RAG output containing retrieved chunks and metadata.",
+            "example": {
+              "query_time": 3263.56,
+              "results": [
+                {
+                  "content": "COPRAJA, an island in the Mediterranean Sea... The chief town is Tratozzio.",
+                  "dataset_id": "d84d1a2e-127d-4393-91d0-afb7e4fd9c68",
+                  "object_id": "kp-eb0707-031203-1328-v2.xml",
+                  "similarity": 1.0
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "question",
+          "rag_output"
+        ],
+        "title": "TextQuestionAnswerQuery",
+        "type": "object"
+      },
+      "TextQuestionAnswerResponse": {
+        "example": {
+          "answerable": true,
+          "reason_code": "ANSWERED",
+          "summary": "Based on the provided context, the chief town of COPRAJA is Tratozzio.",
+          "used_chunks": [
+            {
+              "dataset_id": "d84d1a2e-127d-4393-91d0-afb7e4fd9c68",
+              "object_id": "kp-eb0707-031203-1328-v2.xml",
+              "similarity": 1.0
+            }
+          ]
+        },
+        "properties": {
+          "answerable": {
+            "description": "Whether the model determined the context is sufficient to answer.",
+            "title": "Answerable",
+            "type": "boolean"
+          },
+          "reason_code": {
+            "description": "Structured reason code from summarization decision.",
+            "title": "Reason Code",
+            "type": "string"
+          },
+          "summary": {
+            "description": "Summary answer generated from RAG chunks.",
+            "title": "Summary",
+            "type": "string"
+          },
+          "used_chunks": {
+            "description": "Sources used by the summarization step.",
+            "items": {
+              "$ref": "#/components/schemas/SummarySource"
+            },
+            "title": "Used Chunks",
+            "type": "array"
+          }
+        },
+        "required": [
+          "answerable",
+          "reason_code",
+          "summary",
+          "used_chunks"
+        ],
+        "title": "TextQuestionAnswerResponse",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
         "type": "object"
       },
       "ValidationErrorDetail": {
+        "example": {
+          "Key": "question",
+          "Value": [
+            "Field required"
+          ]
+        },
         "properties": {
           "Key": {
+            "title": "Key",
             "type": "string"
           },
           "Value": {
             "items": {
               "type": "string"
             },
+            "title": "Value",
             "type": "array"
           }
         },
@@ -437,22 +854,36 @@
           "Key",
           "Value"
         ],
+        "title": "ValidationErrorDetail",
         "type": "object"
       },
       "ValidationErrorResponse": {
+        "example": {
+          "code": 102,
+          "error": "validation error",
+          "message": [
+            {
+              "Key": "question",
+              "Value": [
+                "Field required"
+              ]
+            }
+          ]
+        },
         "properties": {
           "code": {
-            "example": 102,
+            "title": "Code",
             "type": "integer"
           },
           "error": {
-            "example": "validation error",
+            "title": "Error",
             "type": "string"
           },
           "message": {
             "items": {
               "$ref": "#/components/schemas/ValidationErrorDetail"
             },
+            "title": "Message",
             "type": "array"
           }
         },
@@ -461,158 +892,250 @@
           "error",
           "message"
         ],
+        "title": "ValidationErrorResponse",
         "type": "object"
       },
       "WikiProperties": {
+        "example": {
+          "aliases": "City of Zurich, ZH, Stadt Z\u00fcrich, Zurich, Switzerland, Z\u00fcrich",
+          "coordinate location": "47.37444444444444, 8.54111111111111",
+          "country": "Switzerland, Old Swiss Confederacy, Helvetic Republic, Switzerland",
+          "description": "capital of the canton of Zurich, Switzerland",
+          "found_osm_json": true,
+          "instance of": "municipality of Switzerland, city of Switzerland, cantonal capital of Switzerland, college town, largest city, big city",
+          "label": "Zurich",
+          "located in the administrative territorial entity": "Z\u00fcrich District",
+          "part of": "Greater Zurich Area, Zurich metropolitan area, Canton of Z\u00fcrich"
+        },
         "properties": {
           "aliases": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Aliases for the Wikidata entity.",
-            "type": "string"
+            "title": "Aliases"
           },
           "coordinate location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Coordinate location.",
-            "type": "string"
+            "title": "Coordinate Location"
           },
           "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Country information.",
-            "type": "string"
+            "title": "Country"
           },
           "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "The description of the Wikidata entity.",
-            "type": "string"
+            "title": "Description"
           },
           "found_osm_json": {
+            "default": false,
             "description": "Whether OSM JSON was found.",
+            "title": "Found Osm Json",
             "type": "boolean"
           },
           "instance of": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Instance types of the entity.",
-            "type": "string"
+            "title": "Instance Of"
           },
           "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "The label of the Wikidata entity.",
-            "type": "string"
+            "title": "Label"
           },
           "located in the administrative territorial entity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Administrative location.",
-            "type": "string"
+            "title": "Located In The Administrative Territorial Entity"
           },
           "part of": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "What the entity is part of.",
-            "type": "string"
+            "title": "Part Of"
           }
         },
-        "required": [
-          "label",
-          "description",
-          "aliases",
-          "instance of",
-          "part of",
-          "country",
-          "located in the administrative territorial entity",
-          "coordinate location",
-          "found_osm_json"
-        ],
+        "title": "WikiProperties",
         "type": "object"
       }
     },
     "securitySchemes": {
-      "OAuth2Bearer": {
-        "bearerFormat": "JWT",
-        "description": "JWT token for authentication, obtained from the OIDC provider.",
-        "scheme": "bearer",
-        "type": "http"
+      "OAuth2PasswordBearer": {
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "/token"
+          }
+        },
+        "type": "oauth2"
       }
     }
   },
   "info": {
-    "contact": {
-      "name": "DataGEMS helpdesk",
-      "url": "https://datagems.eu/contact-us/"
-    },
-    "description": "The In-Dataset Discovery Service provides a secure API for performing natural language exploration queries on structured or unstructured data within datasets. It supports geospatial queries and text-to-SQL conversion using LLM capabilities.",
-    "license": {
-      "name": "EUPL-1.2 license",
-      "url": "https://interoperable-europe.ec.europa.eu/sites/default/files/custom-page/attachment/2020-03/EUPL-1.2%20EN.txt"
-    },
-    "termsOfService": "https://datagems.eu/terms",
-    "title": "DataGEMS In-Dataset Discovery Service",
+    "description": "A collection of APIs for DataGEMs WP3",
+    "title": "DataGEMs WP3 Demo API",
     "version": "0.3.0"
   },
-  "openapi": "3.0.3",
+  "openapi": "3.1.0",
   "paths": {
     "/": {
       "get": {
-        "description": "Returns the API status.",
-        "operationId": "read_root",
+        "operationId": "read_root__get",
         "responses": {
           "200": {
             "content": {
               "application/json": {
-                "schema": {
-                  "properties": {
-                    "message": {
-                      "example": "In Data Exploration API is running.",
-                      "type": "string"
-                    },
-                    "status": {
-                      "example": "success",
-                      "type": "string"
-                    }
-                  },
-                  "type": "object"
-                }
+                "schema": {}
               }
             },
             "description": "Successful Response"
           }
         },
-        "summary": "Root",
-        "tags": [
-          "Monitoring"
-        ]
+        "summary": "Read Root"
       }
     },
-    "/health": {
+    "/explore": {
       "get": {
-        "description": "Checks the availability of the API service. Returns a 200 OK if the service is healthy. This endpoint does not require authentication.",
-        "operationId": "health_check",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "status": {
-                      "example": "ok",
-                      "type": "string"
-                    }
-                  },
-                  "type": "object"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "Health Check",
-        "tags": [
-          "Monitoring"
-        ]
-      }
-    },
-    "/text2geo": {
-      "get": {
-        "description": "Processes a natural language geospatial question, identifies the place using Wikidata, generates an OverpassQL query, and returns geospatial results including coordinates, GeoJSON data, and bounding boxes.",
-        "operationId": "geospatial_query",
+        "description": "Endpoint to explore the API and its capabilities.",
+        "operationId": "explore_explore_get",
         "parameters": [
           {
-            "description": "The geospatial query question to be processed.",
             "in": "query",
             "name": "question",
             "required": true,
             "schema": {
-              "example": "What are the coordinates in Berlin?",
+              "title": "Question",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Explore Explore Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 102,
+                  "error": "validation error",
+                  "message": [
+                    {
+                      "Key": "question",
+                      "Value": [
+                        "Field required"
+                      ]
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "summary": "Explore"
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health"
+      }
+    },
+    "/text2geo": {
+      "get": {
+        "description": "Endpoint to handle geospatial queries using OverpassQLTool.",
+        "operationId": "geospatial_query_text2geo_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "question",
+            "required": true,
+            "schema": {
+              "title": "Question",
               "type": "string"
             }
           }
@@ -649,33 +1172,20 @@
               }
             },
             "description": "Validation Error"
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Internal Server Error"
           }
         },
         "security": [
           {
-            "OAuth2Bearer": []
+            "OAuth2PasswordBearer": []
           }
         ],
-        "summary": "Geospatial Query",
-        "tags": [
-          "Text-to-Geo"
-        ]
+        "summary": "Geospatial Query"
       }
     },
     "/text2sql": {
       "post": {
-        "description": "Takes a natural language question and database connection information, generates a SQL query using LLM capabilities, and executes it to return results.",
-        "operationId": "text2sql_query",
+        "description": "Endpoint to handle text to SQL queries.",
+        "operationId": "text2sql_query_text2sql_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -724,48 +1234,77 @@
               }
             },
             "description": "Validation Error"
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Internal Server Error"
           }
         },
         "security": [
           {
-            "OAuth2Bearer": []
+            "OAuth2PasswordBearer": []
           }
         ],
-        "summary": "Text-to-SQL Query",
-        "tags": [
-          "Text-to-SQL"
-        ]
+        "summary": "Text2Sql Query"
+      }
+    },
+    "/textQuestionAnswer": {
+      "post": {
+        "description": "Endpoint to summarize RAG content for a question.",
+        "operationId": "text_question_answer_query_textQuestionAnswer_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextQuestionAnswerQuery"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextQuestionAnswerResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 102,
+                  "error": "validation error",
+                  "message": [
+                    {
+                      "Key": "question",
+                      "Value": [
+                        "Field required"
+                      ]
+                    },
+                    {
+                      "Key": "rag_output.results",
+                      "Value": [
+                        "Field required"
+                      ]
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "summary": "Text Question Answer Query"
       }
     }
-  },
-  "servers": [
-    {
-      "description": "Development server",
-      "url": "https://datagems-dev.scayle.es/in-dataset-discovery"
-    }
-  ],
-  "tags": [
-    {
-      "description": "Endpoints for performing geospatial queries using natural language.",
-      "name": "Text-to-Geo"
-    },
-    {
-      "description": "Endpoints for converting natural language questions to SQL queries.",
-      "name": "Text-to-SQL"
-    },
-    {
-      "description": "Endpoints for monitoring the service health.",
-      "name": "Monitoring"
-    }
-  ]
+  }
 }

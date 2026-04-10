@@ -219,8 +219,8 @@ def my_agent(question: str) -> Dict[str, Any]:
 
 1. **Clone the repository**:
 ```bash
-git clone git@github.com:datagems-eosc/in-data-exploration.git
-cd in-data-exploration
+git clone git@github.com:datagems-eosc/in-dataset-discovery.git
+cd in-dataset-discovery
 ```
 
 2. **Install dependencies**:
@@ -244,8 +244,8 @@ cp .env.template .env
 uvicorn src.app.main:app --reload --port 8080
 
 # Or using Docker
-docker build -t in-data-exploration .
-docker run --env-file .env -p 8080:8080 in-data-exploration
+docker build -t in-dataset-discovery .
+docker run --env-file .env -p 8080:8080 in-dataset-discovery
 ```
 
 ### Testing

@@ -1,6 +1,6 @@
 [project]
 name = "in-data-discovery-docs"
-version = "0.1.0"
+version = "0.3.0"
 description = "API docs for in-data-discovery (WP3) of DataGEMS."
 readme = "README.md"
 requires-python = ">=3.11"
