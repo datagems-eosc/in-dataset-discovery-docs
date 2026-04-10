@@ -37,7 +37,7 @@ We use **Trivy** to scan for known vulnerabilities in our dependencies and conta
 
 The service's functionality is validated through API-level integration tests using Postman and its command-line runner, Newman.
 
--   **Test Suite:** The test cases are defined in the Postman collection located at `tests/in-data-exploration-api-tests.postman_collection.json` (if available).
+-   **Test Suite:** The test cases are defined in the Postman collection located at `tests/in-dataset-discovery-api-tests.postman_collection.json` (if available).
 
 -   **Test Cases:** The suite may include the following tests:
     -   **Health Check:** Verifies that the `/health` endpoint is available and returns a `200 OK` status, indicating the service is healthy.

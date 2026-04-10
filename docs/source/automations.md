@@ -21,7 +21,7 @@ This workflow automates the process of building and publishing the service's Doc
     1.  Logs into the GitHub Container Registry using a temporary `GITHUB_TOKEN`.
     2.  Uses the `docker/metadata-action` to automatically generate appropriate Docker tags based on the Git tag.
     3.  Builds the Docker image using the `Dockerfile`.
-    4.  Pushes the newly built and tagged image to the `ghcr.io/datagems-eosc/in-data-exploration` repository, making it available for deployment.
+    4.  Pushes the newly built and tagged image to the `ghcr.io/datagems-eosc/in-dataset-discovery` repository, making it available for deployment.
 
 ## Vulnerability Scanning
 

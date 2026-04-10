@@ -28,14 +28,14 @@ To build and run the container, use the standard Docker commands:
 
 ```bash
 # 1. Build the Docker image
-docker build -t in-data-exploration .
+docker build -t in-dataset-discovery .
 
 # 2. Run the container
 # Note: You must provide all required environment variables.
 docker run -p 8080:8080 \
   --env-file .env \
-  --name in-data-exploration-service \
-  in-data-exploration
+  --name in-dataset-discovery-service \
+  in-dataset-discovery
 ```
 
 ## Configuration
@@ -45,7 +45,7 @@ The service is configured entirely through environment variables. This allows fo
 | Variable | Description | Example |
 |----------|-------------|---------|
 | OIDC_ISSUER_URL | The base URL of the OIDC identity provider for token validation. | https://datagems-dev.scayle.es/oauth/realms/dev |
-| OIDC_AUDIENCE | The audience claim that must be present in the JWT. | in-data-exploration |
+| OIDC_AUDIENCE | The audience claim that must be present in the JWT. | in-dataset-discovery |
 | GATEWAY_API_URL | The base URL of the DataGEMS Gateway API, used to fetch user permissions. | https://datagems-dev.scayle.es/gw |
 | IdpClientSecret | The client secret for the identity provider (taken as secret from Vault). | your-secret |
 | OPENAI_API_KEY | The API key for accessing OpenAI services (required for LLM features). | sk-... |

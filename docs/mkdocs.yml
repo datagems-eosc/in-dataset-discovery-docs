@@ -5,28 +5,28 @@ repo_url: https://github.com/datagems-eosc/in-dataset-discovery/
 nav:
   - Overview: index.md
   - System:
-    - Architecture: architecture.md
-    - Security: security.md
-    - Datastores: datastore.md
+      - Architecture: architecture.md
+      - Security: security.md
+      - Datastores: datastore.md
   - API:
-    - Overview: api-overview.md
-    - Status & Error Codes: error-codes.md
-    - OpenAPI Specification: openapi.md
+      - Overview: api-overview.md
+      - Status & Error Codes: error-codes.md
+      - OpenAPI Specification: openapi.md
   - Setup & Monitoring:
-    - Automations: automations.md
-    - Deployment: deployment.md
-    - Configuration: configuration.md
-    - Logging & Accounting: logging.md
-    - Maintenance: maintenance.md
+      - Automations: automations.md
+      - Deployment: deployment.md
+      - Configuration: configuration.md
+      - Logging & Accounting: logging.md
+      - Maintenance: maintenance.md
   - Developer Guides:
-    - Onboarding (Adding Features): onboarding.md
-    - Quality Assurance (Evaluation): qa.md
-    - FAQ & Known Issues: faq.md
+      - Onboarding (Adding Features): onboarding.md
+      - Quality Assurance (Evaluation): qa.md
+      - FAQ & Known Issues: faq.md
   - License: license.md
   - DataGEMS Home: https://datagems-eosc.github.io/
 
 theme:
-  name: 'material'
+  name: "material"
   favicon: images/favicon.jpg
   logo: images/datagems-portal-icon.png
   icon:

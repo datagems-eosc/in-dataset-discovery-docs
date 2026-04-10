@@ -1,6 +1,6 @@
 # API Overview
 
-The In-Dataset Discovery service exposes a RESTful API for performing in-dataset exploration operations, including geospatial queries and text-to-SQL conversion.
+The In-Dataset Discovery service exposes a RESTful API for performing in-dataset exploration operations, including geospatial queries, text-to-SQL conversion, RAG-based question answering, and API exploration.
 
 ## Base URL
 
@@ -10,7 +10,7 @@ The API is served from the root of the application. All endpoint paths are relat
 
 ## Authentication
 
-The `/text2geo` and `/text2sql` endpoints can accessed only with authentication. See the [Security](./security.md) page for more details. The `/health` endpoint is publicly accessible.
+All operational endpoints require authentication except `/health`. See the [Security](./security.md) page for more details.
 
 ---
 
@@ -177,6 +177,68 @@ Converts natural language questions into SQL queries and executes them against a
       }
     }
     ```
+
+### Text Question Answer Query
+<p id="text-question-answer-query"></p>
+Summarizes retrieved RAG context into an answer for a question.
+
+*   **Endpoint:** `POST /textQuestionAnswer`
+*   **Description:** Takes a natural language question together with retrieved RAG output and returns a short answer, a structured reason code, and the chunks used to produce the summary.
+*   **Authentication:** Required.
+
+*   **Request Body:** The request body must include `question` and `rag_output`. The `rag_output` object contains `results` and an optional `query_time` value.
+
+*   **Example Request:**
+    ```json
+    {
+      "question": "What is the chief town of the island of COPRAJA?",
+      "rag_output": {
+        "query_time": 3263.56,
+        "results": [
+          {
+            "content": "COPRAJA, an island in the Mediterranean Sea... The chief town is Tratozzio.",
+            "dataset_id": "d84d1a2e-127d-4393-91d0-afb7e4fd9c68",
+            "object_id": "kp-eb0707-031203-1328-v2.xml",
+            "similarity": 1.0
+          }
+        ]
+      }
+    }
+    ```
+
+*   **Response Body (Success):**
+    ```json
+    {
+      "answerable": true,
+      "reason_code": "ANSWERED",
+      "summary": "Based on the provided context, the chief town of COPRAJA is Tratozzio.",
+      "used_chunks": [
+        {
+          "dataset_id": "d84d1a2e-127d-4393-91d0-afb7e4fd9c68",
+          "object_id": "kp-eb0707-031203-1328-v2.xml",
+          "similarity": 1.0
+        }
+      ]
+    }
+    ```
+
+### Explore
+<p id="explore-endpoint"></p>
+Provides a generic authenticated endpoint for API exploration.
+
+*   **Endpoint:** `GET /explore`
+*   **Description:** Accepts a required `question` query parameter and returns an open-ended JSON object describing the exploration result.
+*   **Authentication:** Required.
+
+*   **Query Parameters:**
+    - `question` (required): The exploration question to send to the service.
+
+*   **Example Request:**
+    ```
+    GET /explore?question=What endpoints are available for text-to-SQL workflows?
+    ```
+
+*   **Response Body:** The response schema is intentionally flexible and may vary by deployment or query type.
 
 ### Health Check
 <p id="health"></p>

@@ -16,7 +16,7 @@ For local development, the service can be configured using a `.env` file placed 
 
 # OIDC Authentication
 OIDC_ISSUER_URL="https://datagems-dev.scayle.es/oauth/realms/dev"
-OIDC_AUDIENCE="in-data-exploration"
+OIDC_AUDIENCE="in-dataset-discovery"
 GATEWAY_API_URL="https://datagems-dev.scayle.es/gw"
 
 # OpenAI Configuration
@@ -42,7 +42,7 @@ The following table lists all available configuration variables:
 | Variable | Description | Example |
 |----------|-------------|---------|
 | OIDC_ISSUER_URL | The base URL of the OIDC identity provider for token validation. | https://datagems-dev.scayle.es/oauth/realms/dev |
-| OIDC_AUDIENCE | The audience claim that must be present in the JWT. | in-data-exploration |
+| OIDC_AUDIENCE | The audience claim that must be present in the JWT. | in-dataset-discovery |
 | GATEWAY_API_URL | The base URL of the DataGEMS Gateway API, used to fetch user permissions. | https://datagems-dev.scayle.es/gw |
 | IdpClientSecret | The client secret for the identity provider. | your-secret |
 | OPENAI_API_KEY | The API key for accessing OpenAI services (required for LLM features). | sk-... |
