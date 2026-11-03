@@ -10,7 +10,7 @@ The service validates incoming JWTs against the OIDC provider's public keys. The
 
 Authorization is role-based. The service checks for specific roles within the validated JWT's claims.
 
-- **Required Roles:** All operational endpoints except `/health` require authentication, including `/text2geo`, `/text2sql`, `/textQuestionAnswer`, and `/explore`.
+- **Required Roles:** All operational endpoints except `/health` require authentication. That includes `GET /text2geo`, `POST /text2sql`, `GET /explore`, `POST /text2sql4ap`, `POST /explore4ap`, and `/textQuestionAnswer`.
 
 If a user attempts to access an endpoint without the required role, the API will respond with a `403 Forbidden` error.
 
@@ -19,5 +19,6 @@ If a user attempts to access an endpoint without the required role, the API will
 In addition to role-based access, the service can enforce dataset-level permissions when integrated with the DataGEMS Gateway.
 
 - **Database Access:**
-    - For `/text2sql` endpoints, database access is controlled through the database connection information provided in the request. Users must have valid credentials for the databases they wish to query.
-    - The service does not store or manage database credentials; they must be provided with each request.
+    - `POST /text2sql` uses the database connection in the request. The caller supplies host, port, database, schema, username, and password. The service does not store those credentials.
+    - `GET /explore` uses the service ERA5-Land settings (`DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME_ERA5LAND`, `DB_SCHEMA_ERA5LAND`).
+    - `POST /text2sql4ap` and `POST /explore4ap` take an analytical pattern graph. Host, port, and database name come from the connection node's `contentUrl`, and the service authenticates with `DB_USER` and `DB_PASSWORD`.

@@ -41,8 +41,10 @@ The service's functionality is validated through API-level integration tests usi
 
 -   **Test Cases:** The suite may include the following tests:
     -   **Health Check:** Verifies that the `/health` endpoint is available and returns a `200 OK` status, indicating the service is healthy.
-    -   **Geospatial Query - Valid Request:** Executes a valid geospatial query against the `/geospatial` endpoint and asserts that the response is successful (`200 OK`) and has the correct structure.
-    -   **Text-to-SQL Query - Valid Request:** Executes a valid text-to-SQL query against the `/text2sql` endpoint and asserts that the response is successful (`200 OK`) and contains the generated SQL and results.
+    -   **Geospatial Query - Valid Request:** Executes a valid geospatial query against `GET /text2geo` and asserts that the response is successful (`200 OK`) and has the correct structure.
+    -   **Text-to-SQL Query - Valid Request:** Executes a valid text-to-SQL query against `POST /text2sql` and asserts that the response is successful (`200 OK`) and contains `sql_query` and `sql_results`.
+
+Unit and pipeline coverage for these routes also lives in pytest (`tests/test_text2sql_pipeline.py`, `tests/test_dail_sql_generate.py`, `tests/test_geospatial_empty_place.py`, and the text2sql retrieval tests). Run them with `uv run pytest`.
 
 ### How to Run Tests
 
