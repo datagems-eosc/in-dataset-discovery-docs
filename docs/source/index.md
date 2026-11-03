@@ -2,7 +2,7 @@
 
 Welcome to the documentation for the **In-Dataset Discovery Service**.
 
-This service provides an API for performing natural language exploration queries on structured or unstructured data within a dataset. It is designed to help users quickly find insights by leveraging advanced algorithms and LLM capabilities, including geospatial queries and text-to-SQL conversion.
+This service provides an API for natural-language exploration of structured and unstructured data in a dataset. It uses LLM-backed geospatial lookup and text-to-SQL. `GET /explore` runs the meteo text-to-SQL agent, which calls text2geo and then text-to-SQL. `POST /text2sql4ap` and `POST /explore4ap` write that SQL back onto an analytical pattern graph.
 
 ## How to Use This Documentation
 

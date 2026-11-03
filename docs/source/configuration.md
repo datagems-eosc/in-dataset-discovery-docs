@@ -19,9 +19,32 @@ OIDC_ISSUER_URL="https://datagems-dev.scayle.es/oauth/realms/dev"
 OIDC_AUDIENCE="in-dataset-discovery"
 GATEWAY_API_URL="https://datagems-dev.scayle.es/gw"
 
-# OpenAI Configuration
+# LLM (default provider is Scayle)
+LLM_PROVIDER="scayle"
+SCAYLE_BASE_URL="https://chat.scayle.es/api"
+SCAYLE_USERNAME="scayle-user"
+SCAYLE_PASSWORD="scayle-password"
+SCAYLE_MODEL_NAME="Qwen3.8-Flash-Next"
+
+# Optional OpenAI provider (LLM_PROVIDER=openai)
 OPENAI_API_KEY="sk-your-openai-api-key"
 OPENAI_MODEL_NAME="gpt-4o"
+
+# Text-to-SQL
+TEXT2SQL_FRAMEWORK="dail"
+TEXT2SQL_LEGACY="false"
+
+# ERA5-Land database used by GET /explore
+DB_HOST="the_db_host"
+DB_PORT="5432"
+DB_USER="db_user"
+DB_PASSWORD="db_password"
+DB_NAME_ERA5LAND="era5land"
+DB_SCHEMA_ERA5LAND="public"
+
+# Optional Qdrant few-shot retrieval (era5land only)
+RETRIEVAL_ENABLED="false"
+QDRANT_URL="http://127.0.0.1:6335"
 
 # LangChain Configuration (optional, for LangSmith)
 LANGCHAIN_API_KEY="ls-your-langchain-api-key"
@@ -45,9 +68,25 @@ The following table lists all available configuration variables:
 | OIDC_AUDIENCE | The audience claim that must be present in the JWT. | in-dataset-discovery |
 | GATEWAY_API_URL | The base URL of the DataGEMS Gateway API, used to fetch user permissions. | https://datagems-dev.scayle.es/gw |
 | IdpClientSecret | The client secret for the identity provider. | your-secret |
-| OPENAI_API_KEY | The API key for accessing OpenAI services (required for LLM features). | sk-... |
+| LLM_PROVIDER | LLM provider. Default `scayle`. Also `openai` or `bedrock`. | scayle |
+| LLM_MODEL | Optional model override for every provider. | Qwen3.8-Flash-Next |
+| SCAYLE_BASE_URL | Scayle chat API base URL. | https://chat.scayle.es/api |
+| SCAYLE_USERNAME | Scayle username. | scayle-user |
+| SCAYLE_PASSWORD | Scayle password. | scayle-password |
+| SCAYLE_MODEL_NAME | Scayle model when `LLM_MODEL` is unset. | Qwen3.8-Flash-Next |
+| OPENAI_API_KEY | API key used when `LLM_PROVIDER=openai`. | sk-... |
+| OPENAI_MODEL_NAME | OpenAI model when `LLM_PROVIDER=openai` and `LLM_MODEL` is unset. | gpt-4o |
 | LANGCHAIN_API_KEY | The API key for accessing LangChain services, e.g., LangSmith (optional). | ls-... |
-| OPENAI_MODEL_NAME | The name of the OpenAI model to use. | gpt-4o |
+| TEXT2SQL_FRAMEWORK | SQL generator. Default `dail`. `opensearch` selects the OpenSearch-SQL graph. | dail |
+| TEXT2SQL_LEGACY | `true` keeps the single-shot SQL pattern path. `TEXT2SQL_PIPELINE=false` does the same. | false |
+| DB_HOST | PostgreSQL host for `GET /explore`. | the_db_host |
+| DB_PORT | PostgreSQL port for `GET /explore`. | 5432 |
+| DB_USER | PostgreSQL user for `GET /explore` and the analytical-pattern endpoints. | db_user |
+| DB_PASSWORD | PostgreSQL password for `GET /explore` and the analytical-pattern endpoints. | db_password |
+| DB_NAME_ERA5LAND | Database name for `GET /explore`. | era5land |
+| DB_SCHEMA_ERA5LAND | Schema for `GET /explore`. | public |
+| RETRIEVAL_ENABLED | Attach Qdrant few-shot text for `era5land` when retrieval returns text. Default off. | false |
+| QDRANT_URL | URL for retrieval from in-cluster Qdrant. Local default `http://127.0.0.1:6335`. | http://127.0.0.1:6335 |
 | OVERPASS_API_URL | The URL for the Overpass API. | https://overpass-api.de/api/ |
 
 ## Secrets
@@ -56,8 +95,10 @@ Certain configuration variables contain sensitive information and must be handle
 
 ### Identified Secrets
 
-* **OPENAI_API_KEY**: Contains the API key for OpenAI services.
+* **SCAYLE_PASSWORD**: Password for the default Scayle LLM.
+* **OPENAI_API_KEY**: API key used when `LLM_PROVIDER=openai`.
+* **DB_PASSWORD**: Password for `GET /explore` and the analytical-pattern endpoints.
 * **LANGCHAIN_API_KEY**: Contains the API key for LangChain services (if used).
 * **IdpClientSecret**: The client secret used for communication with the identity provider.
 
-Note: Database credentials for the `/text2sql` endpoint are provided by users in their requests and are not stored by the service.
+`POST /text2sql` takes database credentials in the request and does not store them. `GET /explore` and `POST /text2sql4ap` / `POST /explore4ap` use the service `DB_USER` and `DB_PASSWORD`.

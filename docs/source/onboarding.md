@@ -42,33 +42,36 @@ The service is built on a few key principles:
 
 ```
 src/
-├── app/                    # FastAPI application
-│   ├── main.py            # API endpoints and routing
-│   ├── config.py          # Configuration management
-│   ├── security.py        # Authentication and authorization
-│   ├── exceptions.py      # Custom exception classes
-│   └── logging_config.py  # Logging setup
-├── agents/                 # Agent implementations
-│   ├── geospatial.py      # Geospatial query agent
-│   ├── text2sql.py        # Text-to-SQL agent
-│   ├── graph.py           # LangGraph workflow definitions
-│   └── tools/             # Agent tools
+├── app/
+│   ├── main.py                 # Process entrypoint (uvicorn target)
+│   ├── factory.py              # FastAPI app, router mount, startup
+│   ├── routers/
+│   │   ├── geospatial.py       # GET /text2geo
+│   │   ├── text2sql.py         # POST /text2sql
+│   │   ├── explore.py          # GET /explore
+│   │   └── ap/
+│   │       ├── text2sql4ap.py  # POST /text2sql4ap
+│   │       └── explore4ap.py   # POST /explore4ap
+│   ├── schemas/                # Pydantic request and response models
+│   ├── text2sql4ap_service.py  # AP graph context and SQL enrichment
+│   ├── explore4ap_service.py   # Explore run plus AP enrichment
+│   ├── config.py
+│   └── security.py
+├── agents/
+│   ├── graph.py                # Meteo text-to-SQL agent (text2geo, then text-to-SQL)
+│   ├── text2sql.py             # get_SQL_pattern wrapper
+│   └── tools/
 │       ├── geospatial_tools.py
 │       └── text2sql_tool.py
-└── models/                 # Pydantic models
-    └── geospatial_models.py
+└── dail_sql/                   # Default SQL generator
 ```
 
 ### Key Components
 
-1. **FastAPI Application** (`src/app/main.py`): Defines all API endpoints and request/response models.
-2. **Agents** (`src/agents/`): Implement the core logic for processing queries:
-   - `geospatial.py`: Handles geospatial queries using Wikidata and Overpass API
-   - `text2sql.py`: Converts natural language to SQL queries
-3. **Tools** (`src/agents/tools/`): Reusable functions that agents can call:
-   - `geospatial_tools.py`: Tools for geospatial operations
-   - `text2sql_tool.py`: Tools for SQL generation and execution
-4. **Models** (`src/agents/models/`): Pydantic models for data validation
+1. **Routers** (`src/app/routers/`): HTTP handlers for `/text2geo`, `/text2sql`, `/explore`, `/text2sql4ap`, and `/explore4ap`. Request models live in `src/app/schemas/`.
+2. **Meteo text-to-SQL agent** (`meteo_agent` in `src/agents/graph.py`): LangGraph chain for `GET /explore`. It runs text2geo, then text-to-SQL.
+3. **Text-to-SQL** (`src/agents/tools/text2sql_tool.py`, `src/dail_sql/`): Default DAIL-SQL generation and PostgreSQL execution. `TEXT2SQL_FRAMEWORK=opensearch` and `TEXT2SQL_LEGACY=true` select the other generators.
+4. **Analytical-pattern services** (`src/app/text2sql4ap_service.py`, `src/app/explore4ap_service.py`): Read the question from the natural language operator and the database connection from the analytical pattern graph, then write the SQL back onto the graph.
 
 ---
 
@@ -76,7 +79,7 @@ src/
 
 ### API Layer
 
-The API layer (`src/app/main.py`) handles HTTP requests and responses. Each endpoint:
+The API layer (`src/app/routers/`) handles HTTP requests and responses. `src/app/main.py` only builds the process. Each endpoint:
 - Validates input using Pydantic models
 - Handles authentication (if required)
 - Calls the appropriate agent or tool
@@ -102,7 +105,7 @@ Tools are reusable functions that agents can invoke. They encapsulate specific o
 
 ### Adding a New API Endpoint
 
-1. **Define Request/Response Models** in `src/app/main.py`:
+1. **Define Request/Response Models** in `src/app/schemas/`:
 
 ```python
 class MyQueryRequest(BaseModel):
@@ -167,7 +170,7 @@ def my_tool(param: str) -> Dict[str, Any]:
     return {"result": "value"}
 ```
 
-3. **Integrate with API** in `src/app/main.py`:
+3. **Integrate with API** in a router under `src/app/routers/` and include it from `src/app/routers/__init__.py`:
 
 ```python
 from src.agents.my_agent import my_agent
@@ -257,7 +260,7 @@ curl http://localhost:8080/health
 
 2. **Test an endpoint**:
 ```bash
-curl "http://localhost:8080/geospatial?question=What are the coordinates in Berlin?"
+curl "http://localhost:8080/text2geo?question=What are the coordinates in Berlin?"
 ```
 
 3. **View API documentation**:
