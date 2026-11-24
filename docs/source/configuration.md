@@ -14,7 +14,8 @@ For local development, the service can be configured using a `.env` file placed 
 ```env
 # .env
 
-# OIDC Authentication
+# OIDC Authentication. Independent of DATAGEMS_BASE_URL.
+DATAGEMS_BASE_URL="https://datagems-dev.scayle.es"
 OIDC_ISSUER_URL="https://datagems-dev.scayle.es/oauth/realms/dev"
 OIDC_AUDIENCE="in-dataset-discovery"
 GATEWAY_API_URL="https://datagems-dev.scayle.es/gw"
@@ -64,9 +65,10 @@ The following table lists all available configuration variables:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| OIDC_ISSUER_URL | The base URL of the OIDC identity provider for token validation. | https://datagems-dev.scayle.es/oauth/realms/dev |
+| DATAGEMS_BASE_URL | Origin for MoMa and DMM only. Does not change the OIDC issuer or the Gateway. | https://datagems-dev.scayle.es |
+| OIDC_ISSUER_URL | OIDC issuer URL. Independent of `DATAGEMS_BASE_URL`. | https://datagems-dev.scayle.es/oauth/realms/dev |
 | OIDC_AUDIENCE | The audience claim that must be present in the JWT. | in-dataset-discovery |
-| GATEWAY_API_URL | The base URL of the DataGEMS Gateway API, used to fetch user permissions. | https://datagems-dev.scayle.es/gw |
+| GATEWAY_API_URL | DataGEMS Gateway API URL. Independent of `DATAGEMS_BASE_URL`. | https://datagems-dev.scayle.es/gw |
 | IdpClientSecret | The client secret for the identity provider. | your-secret |
 | LLM_PROVIDER | LLM provider. Default `scayle`. Also `openai` or `bedrock`. | scayle |
 | LLM_MODEL | Optional model override for every provider. | Qwen3.8-Flash-Next |

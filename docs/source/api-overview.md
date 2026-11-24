@@ -6,7 +6,7 @@ The In-Dataset Discovery service exposes a RESTful API for performing in-dataset
 
 The API is served from the root of the application. All endpoint paths are relative to the base URL where the service is deployed:
 
-**Base URL:** [https://datagems-dev.scayle.es/in-dataset-discovery/](https://datagems-dev.scayle.es/in-dataset-discovery/)
+**Base URL:** `{DATAGEMS_BASE_URL}/in-dataset-discovery/`
 
 ## Authentication
 
