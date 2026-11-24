@@ -32,9 +32,10 @@ The service is configured entirely through environment variables. This allows fo
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| OIDC_ISSUER_URL | The base URL of the OIDC identity provider for token validation. | https://datagems-dev.scayle.es/oauth/realms/dev |
+| DATAGEMS_BASE_URL | Origin for MoMa and DMM only. Does not change the OIDC issuer or the Gateway. | https://datagems-dev.scayle.es |
+| OIDC_ISSUER_URL | OIDC issuer URL. Independent of `DATAGEMS_BASE_URL`. | https://datagems-dev.scayle.es/oauth/realms/dev |
 | OIDC_AUDIENCE | The audience claim that must be present in the JWT. | in-dataset-discovery |
-| GATEWAY_API_URL | The base URL of the DataGEMS Gateway API, used to fetch user permissions. | https://datagems-dev.scayle.es/gw |
+| GATEWAY_API_URL | DataGEMS Gateway API URL. Independent of `DATAGEMS_BASE_URL`. | https://datagems-dev.scayle.es/gw |
 | IdpClientSecret | The client secret for the identity provider (taken as secret from Vault). | your-secret |
 | LLM_PROVIDER | LLM provider. Default `scayle`. | scayle |
 | SCAYLE_BASE_URL | Scayle chat API base URL. | https://chat.scayle.es/api |
